@@ -1,0 +1,157 @@
+
+
+{% include "admin_header.html" %}
+
+
+
+
+
+<style>
+  #hero {
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      /* background: #4ec5dd; */
+      background: #C2CFEA;
+      color: #0A306F;
+      font-weight: 600;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+  }
+
+  #hero:hover {
+      /* transform: scale(1.05); */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background: #A0B5E1;
+  }
+
+  .star {
+      position: absolute;
+      font-size: 11px;
+      /* color: rgba(255, 255, 255, 0.8); */
+      color: #294581;
+      
+      animation: appear 0.3s ease-out, disappear 0.3s ease-in 0.5s;
+  }
+
+  @keyframes appear {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+
+  @keyframes disappear {
+      to {
+          opacity: 0;
+      }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const cards = document.querySelectorAll("#hero");
+
+      cards.forEach((card) => {
+          card.addEventListener("mousemove", (event) => {
+              createStarAtCursor(card, event);
+          });
+
+          card.addEventListener("mouseleave", () => {
+              clearStar(card);
+          });
+      });
+  });
+
+  function createStarAtCursor(card, event) {
+      const star = document.createElement("div");
+      star.innerHTML = '<i class="bi bi-star-fill"></i>';
+      star.classList.add("star");
+
+      const x = event.clientX - card.getBoundingClientRect().left;
+      const y = event.clientY - card.getBoundingClientRect().top;
+
+      star.style.left = `${x}px`;
+      star.style.top = `${y}px`;
+
+      card.appendChild(star);
+
+      // Adjust the duration (in milliseconds) to reduce the showing time
+      setTimeout(() => {
+          star.classList.add("disappear");
+          setTimeout(() => {
+              clearStar(card);
+          }, 500);
+      }, 800); // Adjust the duration (in milliseconds) as needed
+  }
+
+  function clearStar(card) {
+      const star = card.querySelector(".star");
+      if (star) {
+          star.remove();
+      }
+  }
+</script>
+
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/1.png);background-size: cover;">
+    <div class="container" >
+
+      <h1>Welcome Back Admin</h1>
+      <h2>Healing at Your Fingertips: Explore our online medical store <br>for a healthier tomorrow.</h2>
+      <a href="#counts" class="btn-get-started scrollto" style="background-color: #4dbabb;color: #fff;">View</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+        <div class="container">
+  
+          <div class="row">
+  
+            <div class="col-lg-3 col-md-6">
+              <div class="count-box">
+                <i class="fas fa-medkit"></i>
+                <span data-purecounter-start="0" data-purecounter-end="{{data['med_c'][0]['med_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Medicines</p>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+              <div class="count-box">
+                <i class="fas fa-cart-plus"></i>
+                <span data-purecounter-start="0" data-purecounter-end="{{data['tsales'][0]['tsales']}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Sales</p>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+              <div class="count-box">
+                <i class="fas fa-users"></i>
+                <span data-purecounter-start="0" data-purecounter-end="{{data['user_count'][0]['user_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Users</p>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+              <div class="count-box">
+                <i class="fas fa-comments"></i>
+                <span data-purecounter-start="0" data-purecounter-end="{{data['com_count'][0]['com_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Complaints</p>
+              </div>
+            </div>
+  
+          </div>
+  
+        </div>
+      </section><!-- End Counts Section -->
+  
+
+{% include "admin_footer.html" %}

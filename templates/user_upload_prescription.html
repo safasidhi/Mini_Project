@@ -1,0 +1,31 @@
+
+{% include "user_header.html" %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/2.png);">
+    <div class="container" >
+
+      <h1>Upload Prescription</h1><br>
+      <form action="" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <th>Title&nbsp;&nbsp;</th>
+                <td><input type="text" name="title" class="form-control" id=""><br></td>
+            </tr>
+            <tr>
+                <th>Prescription File &nbsp;&nbsp;</th>
+                <td><input type="file" name="pre_file" class="form-control"  id=""><br></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right"><input type="submit" name="upl" value="UPLOAD" class="btn btn-info"  id=""></td>
+            </tr>
+        </table>
+      </form>
+      
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+
+    {% include "user_footer.html" %}

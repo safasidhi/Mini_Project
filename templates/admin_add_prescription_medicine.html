@@ -1,0 +1,216 @@
+
+{% include "admin_header.html" %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/9.png);height: 1200px;">
+  <div class="container" >
+
+    {% if data['pre_status'] == "Pending" %}
+  <form action="" method="post" enctype="multipart/form-data"> 
+      <h1>Add Medicine</h1>
+      <table >
+          <tr>
+              <th>Medicine Name</th>
+              <td>
+                <select name="med" id="medicineSelect" class="form-control">
+                    <option value="">Choose Medicine</option>
+                    {% for row in data['med'] %}
+                    <option value="{{ row['medicine_id'] }}">{{ row['name'] }}</option>
+                    {% endfor %}
+                </select></td>
+          </tr>
+          <tr>
+              <th>Medicine Description</th>
+              <td><Textarea name="mdes" class="form-control" disabled></Textarea></td>
+          </tr>
+          <tr>
+              <th>Price</th>
+              <td><input type="text" name="price" id="" class="form-control" disabled></td>
+          </tr>
+          <tr>
+              <th>Exp Date</th>
+              <td><input type="date" name="exdate" id="" class="form-control" disabled></td>
+          </tr>
+          <tr>
+              <th>Stock</th>
+              <td><input type="text" name="stock" id="" class="form-control" disabled></td>
+          </tr>
+          <tr>
+              <th>Image</th>
+              <td><img src="/static/assets/img/med1.png" alt="" style="width: 100px; height: 100px;"></td>
+          </tr>
+          <tr>
+            <th>Quantity</th>
+            <td><input type="number" min="0" name="qnty" class="form-control" id=""></td>
+          </tr>
+          <tr>
+            <th>Total Amount</th>
+            <td><input type="text" name="tamount" class="form-control" id="" readonly></td>
+          </tr>
+          <tr>
+              <td><input type="submit" name="add" value="Add" id="" class="btn" style="background-color: #4dbabb;color: #fff;"></td>
+          </tr>
+      </table>
+  </form>
+
+  <br><br><br>
+{% endif %}
+
+
+<h1>Prescribed Medicines</h1>
+{% if data['pre_status'] != "Pending" %}
+<a href="#vvmed" class="btn" style="background-color: #4dbabb;color: #fff;">View</a>
+{% endif %}
+
+  </div>
+</section><!-- End Hero -->
+
+<main id="main">
+
+  <div class="container" id="vvmed">
+    <form action="" method="post">
+  <table class="table table-striped" > 
+      <tr>
+          <th>Sl No</th>
+          <th>Image</th>
+          <th>Medicine Name</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+      </tr>
+      {% for row in data['view_pre_med'] %}
+      <tr>
+          <td>{{ loop.index }}</td>
+          <td><img src="/{{ row['image'] }}" alt="Medicine Image" style="width: 90px; height: 90px;"></td>
+          <td>{{ row['name'] }}</td>
+          <td>{{ row['quantity'] }}</td>
+          <td>{{ row['amount'] }}</td>
+          {% if data['pre_status'] == "Pending" %}
+          <td><a href="?action=remove&medcine_id={{row['medcine_id']}}&up_pres_medicine_id={{row['up_pres_medicine_id']}}&quantity={{row['quantity']}}&prescription_id={{row['prescription_id']}}&status={{data['pre_status']}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color: red;" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+              </svg>
+          </a></td>
+          {% endif %}
+          <!-- Inside the loop -->
+
+
+      </tr>
+      {% endfor %}
+      <tr>
+        <th colspan="3" style="color: rgb(8, 85, 8);">Grand Total : <i class="bi bi-currency-rupee"></i>{{ data['gt']}}/-</th>
+        {% if data['pre_status'] == "Pending" %}
+        <td colspan="3" align="End"><input type="submit" name="submit" value="SUBMIT" class="btn" style="background-color: #4dbabb;color: #fff;" id="">
+        {% endif %}
+        </td>
+      </tr>
+  </table>
+</form>
+
+
+</div>
+
+
+
+
+<script>
+    document.getElementById('medicineSelect').addEventListener('change', function() {
+        var selectedMedicineId = this.value;
+    
+        // Make an Ajax request to fetch data for the selected medicine
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/admin/med_details?medicine_id=' + selectedMedicineId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var responseData = JSON.parse(xhr.responseText);
+    
+                // Update the DOM with the fetched data
+                document.getElementsByName('mdes')[0].value = responseData.description;
+                document.getElementsByName('price')[0].value = responseData.price;
+                document.getElementsByName('exdate')[0].value = responseData.expDate;
+                document.getElementsByName('stock')[0].value = responseData.stock;
+                document.querySelector('img').src = "/"+responseData.imageSrc;
+            }
+        };
+        xhr.send();
+
+        document.getElementsByName('qnty')[0].value = '';
+    document.getElementsByName('tamount')[0].value = '';
+    updateButtonStatus();
+
+    });
+
+
+// document.getElementsByName('qnty')[0].addEventListener('input', function() {
+//     var quantity = parseInt(this.value);
+//     var price = parseFloat(document.getElementsByName('price')[0].value);
+
+//     // Check if quantity and price are valid numbers
+//     if (!isNaN(quantity) && !isNaN(price)) {
+//         var totalAmount = quantity * price;
+//         document.getElementsByName('tamount')[0].value = totalAmount.toFixed(2); // Adjust decimal places as needed
+//     } else {
+//         document.getElementsByName('tamount')[0].value = '';
+//     }
+// });
+
+
+document.getElementsByName('qnty')[0].addEventListener('input', function() {
+    var quantity = parseInt(this.value);
+    var stock = parseInt(document.getElementsByName('stock')[0].value);
+
+    if (isNaN(quantity) || quantity < 0) {
+        // Handle invalid quantity input
+        this.value = '';
+        document.getElementsByName('tamount')[0].value = '';
+        updateButtonStatus();
+        return;
+    }
+
+    var price = parseFloat(document.getElementsByName('price')[0].value);
+
+    // Check if quantity and price are valid numbers
+    if (!isNaN(quantity) && !isNaN(price)) {
+        var totalAmount = quantity * price;
+        document.getElementsByName('tamount')[0].value = totalAmount.toFixed(2); // Adjust decimal places as needed
+        updateButtonStatus(quantity, stock);
+    } else {
+        document.getElementsByName('tamount')[0].value = '';
+        updateButtonStatus();
+    }
+});
+
+function updateButtonStatus(quantity, stock) {
+    var addButton = document.getElementsByName('add')[0];
+
+    if (typeof quantity === 'undefined' || typeof stock === 'undefined') {
+        // If quantity or stock is not provided, disable the button and clear any messages
+        addButton.disabled = true;
+        addButton.value = 'Add';
+        return;
+    }
+
+    if (quantity <= stock) {
+        // Enable the button and clear any messages
+        addButton.disabled = false;
+        addButton.value = 'Add';
+    } else {
+        // Disable the button and show a message
+        addButton.disabled = true;
+        addButton.value = 'Quantity exceeds stock';
+        addButton.style.backgroundColor = 'red';
+    }
+}
+    </script>
+
+
+  {% include "admin_footer.html" %}
+
+
+
+

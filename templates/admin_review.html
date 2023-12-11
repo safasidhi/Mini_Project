@@ -1,0 +1,58 @@
+{% include "admin_header.html" %}
+
+
+<style>
+  /* CSS to add margin space around the cards */
+  .custom-card {
+    margin: 10px; /* Adjust the value as needed */
+  }
+</style>
+
+
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/2.png);height: 720px;">
+    <div class="container" >
+
+      <h1>Review</h1>
+      <h2>Reviews are stepping stones to better service.</h2>
+      <a href="#cmp" class="btn-get-started scrollto" style="background-color: #4dbabb;color: #fff;">View</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+<div class="container-fluid pt-4" id="cmp">
+    <!-- Section: Main chart -->
+    <section class="mb-4">
+      <div class="card">
+        <div class="card-header py-3">
+          <h5 class="mb-0 text-center"><strong>Reviews</strong></h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+            {% for row in data['compl'] %}
+            <div class="col-md-12 custom-card"> <!-- Use col-md-3 to display 4 cards in a row -->
+              <div class="card p-3">
+                
+                
+                <span>Description : {{ row['review_des'] }}</span>
+               
+                <span class="d-flex justify-content-end" style="color: brown; font-weight: 600;">- {{ row['fname'] }} {{ row['lname'] }}</span>
+                <span class="d-flex justify-content-end" style="color: rgb(110, 106, 106); font-weight: 400;"> <!-- Use Bootstrap's flex utility classes -->
+                  {{ row['date'] }}
+                </span>
+                <span></span>
+               
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+          <!-- <canvas class="my-4 w-100" id="myChart" height="380"></canvas> -->
+        </div>
+      </div>
+    </section>
+</div>
+
+{% include "admin_footer.html" %}

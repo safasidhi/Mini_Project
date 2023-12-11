@@ -1,0 +1,58 @@
+
+{% include "user_header.html" %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/3.png);height:1100px">
+    <div class="container" >
+
+      <h1>Complaint Box</h1><br>
+      <form action="" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <th>Title&nbsp;&nbsp;</th>
+                <td><input type="text" name="title" class="form-control" id=""><br></td>
+            </tr>
+            <tr>
+                <th>Description &nbsp;&nbsp;</th>
+                <td><textarea name="desc" id="" cols="30" rows="10" class="form-control"></textarea><br></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right"><input type="submit" name="upl" value="Send" class="btn" style="background-color: #4dbabb;color: #fff;"  id=""></td>
+            </tr>
+        </table>
+      </form>
+      
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+
+ 
+    <div class="container-fluid" id="con" >
+        <div class="card" style="padding: 25px;">
+            <h1 align="center">Complaints</h1><br>
+            <div class="row">
+                <table id="tbl" class="table table-striped">
+                    <tr>
+                        <th>Sl No.</th>
+                        <th>Title</th>
+                        <th>Reply</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for row in data['view_com'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ row['title'] }}</td>
+                        <td>{{ row['reply'] }}</td>
+                        <td>{{ row['date'] }}</td>
+                    </tr>
+                    {% endfor %}
+                   
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    {% include "user_footer.html" %}

@@ -1,0 +1,206 @@
+{% include "user_header.html" %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/ppyy.png);height: 720px;background-position: center;background-repeat: no-repeat;">
+    <div class="container" >
+      <!-- <h1 style="margin-top: 160px;">Payment</h1><br> -->
+     
+    
+ 
+        <style>
+            
+            .card {
+                margin-top: 100px;
+                margin-right: 200px;
+                width: 400px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+                float: right;
+            }
+            label {
+                display: block;
+                margin-bottom: 8px;
+            }
+            input {
+                width: calc(100% - 20px);
+                padding: 8px;
+                margin-bottom: 16px;
+                box-sizing: border-box;
+                display: inline-block;
+            }
+            .card-type {
+                display: inline-block;
+                margin-left: 10px;
+                vertical-align: top;
+            }
+            .card-number, .exp-cvc {
+                display: flex;
+                justify-content: space-between;
+            }
+            .exp-date, .cvc {
+                width: 48%;
+            }
+            #button {
+                background-color: #4caf50;
+                color: #fff;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+ 
+    
+        <div class="card" style="margin-bottom: 60px;">
+            <h2>Card Payment</h2>
+            <form action="#" method="post">
+                <label for="cardHolder">Card Holder Name</label>
+                <input type="text" id="cardHolder" class="form-control" name="cardHolder" required>
+    
+                <label for="cardNumber">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" name="cardNumber" pattern="[0-9]{16}" title="16 digits" required oninput="detectCardType(this.value)">
+                <div class="card-type" id="cardTypeDisplay"></div>
+    
+                <div class="card-number">
+                    <div class="exp-date">
+                        <label for="expirationDate">Expiration Date</label>
+                        <input type="text" id="expirationDate" class="form-control" name="expirationDate" pattern="(0[1-9]|1[0-2])\/\d{2}" title="MM/YY" required>
+                    </div>
+                    <div class="cvc">
+                        <label for="cvc">CVC</label>
+                        <input type="text" id="cvc" class="form-control" name="cvc" pattern="\d{3}" title="3 digits" required>
+                    </div>
+                </div>
+                <input type="submit" name="pay"  value="₹{{ data['total_amount'] }}/- Pay Now" id="button">
+                <!-- <button type="submit">Pay Now</button> -->
+            </form>
+        </div>
+    
+        <script>
+            function detectCardType(cardNumber) {
+                var cardTypeDisplay = document.getElementById('cardTypeDisplay');
+                var visaRegex = /^4/;
+                var mastercardRegex = /^5[1-5]/;
+                var amexRegex = /^3[47]/;
+    
+                if (visaRegex.test(cardNumber)) {
+                    displayCardType(cardTypeDisplay, "Visa");
+                } else if (mastercardRegex.test(cardNumber)) {
+                    displayCardType(cardTypeDisplay, "MasterCard");
+                } else if (amexRegex.test(cardNumber)) {
+                    displayCardType(cardTypeDisplay, "American Express");
+                } else {
+                    displayCardType(cardTypeDisplay, "Unknown");
+                }
+            }
+    
+            function displayCardType(element, type) {
+                element.innerHTML = 'Card Type: ' + type;
+            }
+        </script>
+    
+  
+  </div>
+</section>
+<!-- End Hero -->
+
+<main id="main" style="margin-top: 200px;">
+    
+  
+    </main><!-- End #main -->
+  
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+  
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+  
+            <div class="col-lg-3 col-md-6 footer-contact">
+              <h3>Medilab</h3>
+              <p>
+                A108 Adam Street <br>
+                New York, NY 535022<br>
+                United States <br><br>
+                <strong>Phone:</strong> +1 5589 55488 55<br>
+                <strong>Email:</strong> info@example.com<br>
+              </p>
+            </div>
+  
+            <div class="col-lg-2 col-md-6 footer-links">
+              <h4>Useful Links</h4>
+              <ul>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              </ul>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 footer-links">
+              <h4>Our Services</h4>
+              <ul>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+              </ul>
+            </div>
+  
+            <div class="col-lg-4 col-md-6 footer-newsletter">
+              <h4>Join Our Newsletter</h4>
+              <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+              <form action="" method="post">
+                <input type="email" name="email"><input type="submit" value="Subscribe">
+              </form>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+  
+      <div class="container d-md-flex py-4">
+  
+        <div class="me-md-auto text-center text-md-start">
+          <div class="copyright">
+            &copy; Copyright <strong><span>Medilab</span></strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+        <div class="social-links text-center text-md-right pt-3 pt-md-0">
+          <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+          <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+          <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+      </div>
+    </footer><!-- End Footer -->
+   
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+    <!-- Vendor JS Files -->
+    <script src="/static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/assets/vendor/php-email-form/validate.js"></script>
+  
+    <!-- Template Main JS File -->
+    <script src="/static/assets/js/main.js"></script>
+  
+  </body>
+  
+  </html>

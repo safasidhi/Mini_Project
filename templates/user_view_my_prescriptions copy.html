@@ -1,0 +1,186 @@
+
+
+
+
+{% include "user_header.html" %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/m3.png);">
+    <div class="container" >
+
+      <h1>View My Prescriptions</h1>
+    <a href="#vv" ><img src="/static/assets/img/Scroll-Down.gif" alt="Scroll-Down" style="width: 160px;margin-left: 450px;"></a>
+      
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <div class="container-fluid">
+
+       
+
+
+        <style>
+            .card {
+                transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+                /* background: #4ec5dd; */
+                background: #C2CFEA;
+                color: #0A306F;
+                font-weight: 600;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                position: relative;
+                overflow: hidden;
+            }
+        
+            .card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                background: #A0B5E1;
+            }
+        
+            .star {
+                position: absolute;
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.8);
+                /* color: #C2CFEA; */
+                
+                animation: appear 0.3s ease-out, disappear 0.3s ease-in 0.5s;
+            }
+        
+            @keyframes appear {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        
+            @keyframes disappear {
+                to {
+                    opacity: 0;
+                }
+            }
+        </style>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const cards = document.querySelectorAll(".card");
+        
+                cards.forEach((card) => {
+                    card.addEventListener("mousemove", (event) => {
+                        createStarAtCursor(card, event);
+                    });
+        
+                    card.addEventListener("mouseleave", () => {
+                        clearStar(card);
+                    });
+                });
+            });
+        
+            function createStarAtCursor(card, event) {
+                const star = document.createElement("div");
+                star.innerHTML = '<i class="bi bi-star-fill"></i>';
+                star.classList.add("star");
+        
+                const x = event.clientX - card.getBoundingClientRect().left;
+                const y = event.clientY - card.getBoundingClientRect().top;
+        
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+        
+                card.appendChild(star);
+        
+                // Adjust the duration (in milliseconds) to reduce the showing time
+                setTimeout(() => {
+                    star.classList.add("disappear");
+                    setTimeout(() => {
+                        clearStar(card);
+                    }, 500);
+                }, 800); // Adjust the duration (in milliseconds) as needed
+            }
+        
+            function clearStar(card) {
+                const star = card.querySelector(".star");
+                if (star) {
+                    star.remove();
+                }
+            }
+        </script>
+        
+        <div class="container-fluid" id="vv">
+          
+
+     
+                    
+            <select name="filter_by_date" id="filter_by_date" class="form-control">
+                <option value="all">Select Option For Filter</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="all">All</option>
+            </select>
+              
+            <div class="row">
+                {% for row in data['view_my_pre'] %}
+                <div class="col-md-3 mb-4" style="height: 440px;">
+                    <div class="card" style="height: auto;">
+                        <img src="/{{ row['file'] }}" alt="Prescription" style="height: 14em;" >
+                        <div class="card-body">
+                            <p>Title  : {{ row['title'] }}</p>
+                            <p>Date   : {{ row['date'] }}</p>
+                            {% if row['status'] == "Pending" %}
+                                <p style="color: rgb(151, 151, 7);">Status : {{ row['status'] }}</p>
+                            {% elif row['status'] == "Rejected"  %}
+                                <p style="color: red;">Status : {{ row['status'] }}</p>
+                            {% elif row['status'] == "Accepted" or row['status'] == "Paid" %}
+                                <p style="color: green;">Status : {{ row['status'] }}</p>
+                                <a href="user_view_medicines?prescription_id={{row['prescription_id']}}&st={{ row['status'] }}" class="btn btn-info btn-sm" style="color: #fff;">View Medicines</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+    </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const filterSelect = document.getElementById("filter_by_date");
+    const cards = document.querySelectorAll(".card");
+
+    filterSelect.addEventListener("change", function () {
+        const selectedValue = filterSelect.value;
+
+        cards.forEach((card) => {
+            const cardDateElement = card.querySelector(".card-body p:contains(Date)"); // Update the selector
+            const cardDate = new Date(cardDateElement.textContent);
+
+            if (selectedValue === "all" || (selectedValue === "today" && isToday(cardDate)) || (selectedValue === "yesterday" && isYesterday(cardDate))) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+});
+
+function isToday(date) {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+}
+
+function isYesterday(date) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return date.toDateString() === yesterday.toDateString();
+}
+
+</script>
+
+
+    {% include "user_footer.html" %}

@@ -1,0 +1,223 @@
+{% include "public_header.html" %}
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/2.png);height:900px">
+  <div class="container">
+    <h1>Welcome to Medi Store</h1><br>
+    <form method="post" style="width: 500px;">
+      <div class="form-group">
+        <label for="exampleInputFirstName">First Name</label>
+        <input type="text" name="fname" class="form-control" id="exampleInputFirstName" aria-describedby="emailHelp" placeholder="Enter First Name" oninput="checkInputValidity()">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputLastName">Last Name</label>
+        <input type="text" name="lname" class="form-control" id="exampleInputLastName" aria-describedby="emailHelp" placeholder="Enter Last Name" oninput="checkInputValidity()">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputContactNumber">Contact Number</label>
+        <input type="number" name="phone" class="form-control" id="exampleInputContactNumber" aria-describedby="emailHelp" placeholder="Enter Contact Number" oninput="checkInputValidity()">
+      </div>
+
+      <!-- Update the email input field with an id for easier access in JavaScript -->
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" oninput="checkInputValidity()">
+        <!-- Add an empty span for displaying the username and email format availability status -->
+        <span id="usernameAvailability" style="color: black;"></span>
+        <span id="emailFormatValidity" style="color: red;"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" name="passw" class="form-control" id="exampleInputPassword1" placeholder="Password" oninput="checkInputValidity()">
+      </div>
+
+      <div class="form-check">
+        <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+      </div>
+
+      <!-- Add an empty span for displaying the validation status -->
+      <span id="validationStatus" style="color: red;"></span><br>
+
+      <input type="submit" name="reg" id="reg_bt" value="SignUp" class="btn" style="background-color: #4dbabb;color: #fff;" disabled>
+    </form>
+  </div>
+</section><!-- End Hero -->
+
+<main id="main">
+
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="fas fa-medkit"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['med_c'][0]['med_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Medicines</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+            <div class="count-box">
+              <i class="fas fa-cart-plus"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['tsales'][0]['tsales']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Sales</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="fas fa-users"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['user_count'][0]['user_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Users</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="fas fa-comments"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['com_count'][0]['com_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Complaints</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+
+  <!-- Add a style tag to define the red border color -->
+  <style>
+    .invalid {
+      border-color: red;
+    }
+  </style>
+
+  <script>
+    function checkInputValidity() {
+      // Get the entered values
+      var firstNameInput = document.getElementById("exampleInputFirstName");
+      var lastNameInput = document.getElementById("exampleInputLastName");
+      var contactNumberInput = document.getElementById("exampleInputContactNumber");
+      var usernameInput = document.getElementById("exampleInputEmail1");
+      var passwordInput = document.getElementById("exampleInputPassword1");
+
+      var firstName = firstNameInput.value;
+      var lastName = lastNameInput.value;
+      var contactNumber = contactNumberInput.value;
+      var username = usernameInput.value;
+      var password = passwordInput.value;
+
+      // Check first name and last name for alphabets only
+      if (!isValidName(firstName)) {
+        updateValidationStatus("First name must contain only alphabets");
+        return;
+      } else {
+        firstNameInput.classList.remove("invalid");
+      }
+
+      if (!isValidName(lastName)) {
+        updateValidationStatus("Last name must contain only alphabets");
+        return;
+      } else {
+        lastNameInput.classList.remove("invalid");
+      }
+
+      // Check contact number for 10 digits
+      if (!isValidContactNumber(contactNumber)) {
+        updateValidationStatus("Contact number must be a 10-digit number");
+        return;
+      } else {
+        contactNumberInput.classList.remove("invalid");
+      }
+
+      // Check if the entered username is a valid email address
+      var emailFormatValiditySpan = document.getElementById("emailFormatValidity");
+      if (!isValidEmail(username)) {
+        emailFormatValiditySpan.innerHTML = "Invalid email format";
+        emailFormatValiditySpan.style.color = "red";
+        document.getElementById("reg_bt").disabled = true;
+        usernameInput.classList.add("invalid");
+        return;
+      } else {
+        emailFormatValiditySpan.innerHTML = "";
+        emailFormatValiditySpan.style.color = "black";
+        usernameInput.classList.remove("invalid");
+      }
+
+      // Make an AJAX request to check the username
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          // Update the availability status based on the response
+          var availabilitySpan = document.getElementById("usernameAvailability");
+          availabilitySpan.innerHTML = xhr.responseText;
+
+          // Update button state and input border color
+          var submitButton = document.getElementById("reg_bt");
+          if (xhr.responseText.trim() === "Username is available") {
+            submitButton.disabled = false;
+            availabilitySpan.style.color = "green"; // Change color to green for available username
+          } else {
+            submitButton.disabled = true;
+            availabilitySpan.style.color = "red"; // Change color to red for unavailable username
+            usernameInput.classList.add("invalid");
+          }
+        }
+      };
+      xhr.open("GET", "/check_username?username=" + username, true);
+      xhr.send();
+
+      // Check password for alphanumeric with symbols, min length 8, and max length 16
+      if (!isValidPassword(password)) {
+        updateValidationStatus("Password must be alphanumeric with symbols, min length 8, and max length 16");
+        return;
+      } else {
+        passwordInput.classList.remove("invalid");
+      }
+
+      // If all validations pass, enable the submit button
+      document.getElementById("reg_bt").disabled = false;
+      updateValidationStatus("");
+    }
+
+    // Function to check if the entered value is a valid name (alphabets only)
+    function isValidName(value) {
+      var nameRegex = /^[a-zA-Z]+$/;
+      return nameRegex.test(value);
+    }
+
+    // Function to check if the entered value is a valid contact number (10 digits)
+    function isValidContactNumber(value) {
+      var contactNumberRegex = /^\d{10}$/;
+      return contactNumberRegex.test(value);
+    }
+
+    // Function to check if the entered value is a valid email address
+    function isValidEmail(email) {
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Function to check if the entered value is a valid password (alphanumeric with symbols, min length 8, max length 16)
+    function isValidPassword(value) {
+      var passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+      return passwordRegex.test(value);
+    }
+
+    // Function to update the validation status message
+    function updateValidationStatus(message) {
+      var validationStatusSpan = document.getElementById("validationStatus");
+      validationStatusSpan.innerHTML = message;
+      validationStatusSpan.style.color = "red";
+    }
+  </script>
+
+  {% include "public_footer.html" %}
+

@@ -1,0 +1,78 @@
+{% include "public_header.html" %}
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/4.png);height:900px">
+    <div class="container">
+
+      <h1>Welcome to Medi Store</h1><br>
+      <form method="post" style="width: 500px;">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" name="email" required class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" name="passw" required class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-check">
+          <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+        </div>
+        <input type="submit" name="login" id="" value="Login" class="btn " style="background-color: #4dbabb;color: #fff;">
+      </form>
+      <!-- <a href="/login" class="btn-get-started scrollto">Get Started</a> -->
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">  
+
+
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="fas fa-medkit"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['med_c'][0]['med_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Medicines</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+            <div class="count-box">
+              <i class="fas fa-cart-plus"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['tsales'][0]['tsales']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Sales</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="fas fa-users"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['user_count'][0]['user_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Users</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="fas fa-comments"></i>
+              <span data-purecounter-start="0" data-purecounter-end="{{data['com_count'][0]['com_count']}}" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Complaints</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+
+
+{% include "public_footer.html" %}

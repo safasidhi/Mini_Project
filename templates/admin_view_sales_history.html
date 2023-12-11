@@ -1,0 +1,85 @@
+{% include "admin_header.html" %}
+
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/m1.png);height: 720px;">
+    <div class="container" >
+
+      <h1>Sales History</h1>
+      <h2>"Prescribing a path to wellness, one dose at a time. <br>Trust us to deliver the right remedies for your <br>health journey at Medi Store."</h2>
+      <a href="#gl" class="btn-get-started scrollto" style="background-color: #4dbabb;color: #fff;">View</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+
+
+    
+    <style>
+        /* Add this style to change the hover color */
+        .table-hover tbody tr:hover td{
+          background-color: rgb(196, 226, 241) !important; /* Change this color to your desired hover color */
+        }
+      </style>
+      <!-- ======= Gallery Section ======= -->
+      <section id="gl" class="gallery">
+        <div class="container">
+  
+          <div class="section-title">
+            <h2>Sales</h2>
+            <p>"Ensuring your well-being with precision and care. At Medi Store, we meticulously review each prescription to deliver the right medicine, prioritizing your health and peace of mind."</p>
+          </div>
+        </div>
+  
+        <div class="container-fluid">
+          <div class="row g-0">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="?action=tday&prescription_id=0" class="btn btn-info" style="width: 100%;">Today</a>
+                   
+                </div>
+                <div class="col-md-6">
+                    <a href="?action=prevd&prescription_id=0" class="btn btn-warning" style="width: 100%;">Previous</a>
+                </div>
+            </div>
+            
+
+            <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Sl No.</th>
+                    <th>Customer Name</th>
+                    <th>Title</th>
+                    <th>Prescriptions</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in data['files'] %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row['fname'] }} {{ row['lname'] }}</td>
+                    <td>{{ row['title'] }}</td>
+                    <td><a href="/{{ row['file'] }}"><img src="/{{ row['file'] }}" alt="Prescription" style="width: 100px;height: 100px;"><br>Click Me </a></td>
+                    <td>{{ row['date'] }}</td>
+                    <td>{{ row['status'] }}</td>
+                    
+                   
+                    <td><a href="admin_add_prescription_medicine?prescription_id={{row['prescription_id']}}&status={{ row['status'] }}" class="btn btn-info btn-sm">View Medicine</a>
+                 
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+  
+        </div>
+      </section><!-- End Gallery Section -->
+  
+  
+
+{% include "admin_footer.html" %}

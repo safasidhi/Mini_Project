@@ -1,0 +1,261 @@
+
+  {% include "admin_header.html" %}
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".change-price-link").click(function (e) {
+            // alert("hhhhhh")
+            e.preventDefault();
+            var row = $(this).closest("tr");
+            var medicineId = row.find(".change-price-link").data("medicine-id");
+            // alert(medicineId)
+            var currentPrice = row.find(".current-price").text();
+
+            var inputField = "<input type='text' class='form-control' name='new_price' value='" + currentPrice + "' id='new-price'>";
+            var submitButton = "<input type='submit' class='btn btn-danger btn-sm' value='Update' id='submit-button'>";
+
+            var cancelButton = "<button class='btn btn-secondary btn-sm' id='cancel-button'>Cancel</button>";
+
+            
+            row.find(".price-cell").html(inputField + "<br>" + submitButton + " " + cancelButton );
+
+            $("#submit-button").click(function (e) {
+                // alert("iiiiii")
+                e.preventDefault();
+                var newPrice = $("#new-price").val();
+                // alert(newPrice)
+
+                // Send the updated price to the server using AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/update_price",
+                    data: { id: medicineId, new_price: newPrice },
+                    success: function (response) {
+                        // Handle the server response if needed
+                        console.log(response);
+                        window.location.href = "/admin/admin_manage_medicine";
+                    }
+                });
+            });
+
+            $("#cancel-button").click(function (e) {
+                e.preventDefault();
+        
+                window.location.href = "/admin/admin_manage_medicine";
+            });
+        });
+    });
+    // ################################
+
+    $(document).ready(function () {
+        $(".change-stock-link").click(function (e) {
+            // alert("hhhhhh")
+            e.preventDefault();
+            var row = $(this).closest("tr");
+            var medicineId = row.find(".change-stock-link").data("medicine-id");
+            // alert(medicineId)
+            var currentStock = row.find(".current-stock").text();
+
+            var inputField = "<input type='text' class='form-control' name='new_stock' value='" + currentStock + "' id='new-stock'>";
+            var submitButton = "<input type='submit' class='btn btn-danger btn-sm' value='Update' id='submit-button'>";
+            var cancelButton = "<button class='btn btn-secondary btn-sm' id='cancel-button'>Cancel</button>";
+
+            
+
+            row.find(".stock-cell").html(inputField + "<br>" + submitButton + " " + cancelButton );
+
+            $("#submit-button").click(function (e) {
+                // alert("iiiiii")
+                e.preventDefault();
+                var newStock = $("#new-stock").val();
+                // alert(newPrice)
+
+                // Send the updated price to the server using AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/update_stock",
+                    data: { id: medicineId, new_stock: newStock },
+                    success: function (response) {
+                        
+                        // Handle the server response if needed
+                        console.log(response);
+                        window.location.href = "/admin/admin_manage_medicine";
+                    }
+                });
+            });
+            $("#cancel-button").click(function (e) {
+                e.preventDefault();
+        
+                window.location.href = "/admin/admin_manage_medicine";
+            });
+        });
+    });
+
+    // ##############################
+
+    $(document).ready(function () {
+    $(".change-status-link").click(function (e) {
+        e.preventDefault();
+        var row = $(this).closest("tr");
+        var medicineId = row.find(".change-status-link").data("medicine-id");
+        var currentStatus = row.find(".current-status").text();
+
+        // Assume statusOptions is an array of possible status values
+        var statusOptions = ['NA', 'Available', 'Not-Available']; 
+
+        var selectOptions = statusOptions.map(function(option) {
+            return '<option value="' + option + '"' + (option === currentStatus ? ' selected' : '') + '>' + option + '</option>';
+        });
+
+        var selectField = "<select name='new_status' class='form-control' id='new-status'>" + selectOptions.join('') + "</select>";
+        var submitButton = "<input type='submit' class='btn btn-danger btn-sm' value='Change' id='submit-button'>";
+        var cancelButton = "<button class='btn btn-secondary btn-sm' id='cancel-button'>Cancel</button>";
+
+            
+
+        row.find(".status-cell").html(selectField + "<br>" + submitButton + " " + cancelButton );
+
+        $("#submit-button").click(function (e) {
+            e.preventDefault();
+            var newStatus = $("#new-status").val();
+
+            // Send the updated status to the server using AJAX
+            $.ajax({
+                type: "POST",
+                url: "/admin/update_status",
+                data: { id: medicineId, new_status: newStatus },
+                success: function (response) {
+                    // Handle the server response if needed
+                    console.log(response);
+                    window.location.href = "/admin/admin_manage_medicine";
+                }
+            });
+        });
+        $("#cancel-button").click(function (e) {
+                e.preventDefault();
+        
+                window.location.href = "/admin/admin_manage_medicine";
+            });
+    });
+});
+
+</script>
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background-image: url(/static/assets/img/6.png);height:1000px">
+    <div class="container" >
+
+      
+    <form action="" method="post" enctype="multipart/form-data"> 
+        <h1>Manage Medicine</h1>
+        <table >
+            <tr>
+                <th>Medicine Name</th>
+                <td><input type="text" required name="mname" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Medicine Description</th>
+                <td><Textarea name="mdes" required class="form-control"></Textarea></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td><input type="text" pattern="[0-9]{0,}" required name="price" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Exp Date</th>
+                <td><input type="date" required name="exdate" min="{{ data['current_date'] }}" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td><input type="text" pattern="[0-9]{0,}" required name="stock" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><input type="file" required name="image" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="add" value="Add" id="" class="btn" style="background-color: #4dbabb;color: #fff;"></td>
+            </tr>
+        </table>
+    </form>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <div class="container" id="vvmed">
+    <table class="table table-striped" > 
+        <tr>
+            <th>Sl No</th>
+            <th>Image</th>
+            <th>Medicine Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Exp Date</th>
+            <th>Stock</th>
+            <th>Status</th>
+        </tr>
+        {% for row in data['view_med'] %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><img src="/{{ row['image'] }}" alt="image" style="width: 100px;"></td>
+            <td>{{ row['name'] }}</td>
+            <td>{{ row['description'] }}</td>
+            <!-- Inside the loop -->
+<td class="price-cell">
+    {% if data['change_price'] == "change_price"  %}
+        <input type="text" name="" value="{{ row['price'] }}" id="" class="current-price">
+        <br>
+        <a href="#" class="change-price-link" data-medicine-id="{{ row['medicine_id'] }}" >Change Price</a>
+    {% else %}
+        <span class="current-price">{{ row['price'] }}&nbsp;&nbsp;</span>
+        <a href="#" class="change-price-link" data-medicine-id="{{ row['medicine_id'] }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+          </svg></a>
+    {% endif %}
+</td>
+
+<td>{{ row['exp_date'] }}</td>
+
+<td class="stock-cell">
+    {% if data['update_stock'] == "update_stock"  %}
+        <input type="text" name="" value="{{ row['stock'] }}" id="" class="current-stock">
+        <br>
+        <a href="#" class="change-stock-link" data-medicine-id="{{ row['medicine_id'] }}">Change Stock</a>
+    {% else %}
+        <span class="current-stock">{{ row['stock'] }}</span>
+        <a href="#" class="change-stock-link" data-medicine-id="{{ row['medicine_id'] }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+          </svg> </a>
+    {% endif %}
+</td>
+
+<td class="status-cell">
+    {% if data['update_status'] == "update_status"  %}
+     
+        <a href="#" class="change-status-link" data-medicine-id="{{ row['medicine_id'] }}">Change Status</a>
+    {% else %}
+        <span class="current-status">{{ row['status'] }}</span>
+        <a href="#" class="change-status-link" data-medicine-id="{{ row['medicine_id'] }}" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+          </svg></a>
+    {% endif %}
+</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+
+
+    {% include "admin_footer.html" %}
+
+
+
+

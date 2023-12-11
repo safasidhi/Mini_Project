@@ -1,0 +1,245 @@
+
+{% include "user_header.html" %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center " style="background-image: url(/static/assets/img/bb.png);background-size: cover;background-position: center;height: 500px;">
+    <div class="container" >
+
+      <h1>Medicine Details</h1><br>
+      
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <div class="container">
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .card {
+                width: 100%;
+                margin: 20px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .logo {
+                width: 200px; /* Adjust the size as needed */
+                height: auto;
+            }
+            .address {
+                float: left;
+                width: 48%;
+            }
+            .c_address {
+                float: right;
+                width: 48%;
+            }
+            .bill-info, .bill-number {
+                float: left;
+                width: 48%;
+                margin-top: 20px;
+            }
+            .bill-date, .date {
+                float: right;
+                width: 48%;
+                margin-top: 20px;
+            }
+            
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+            .grand-total {
+                margin-top: 20px;
+                text-align: right;
+            }
+            .pay-button {
+                margin-top: 20px;
+                text-align: center;
+            }
+        </style>
+  
+    
+        <div class="card">
+            <div class="header">
+                <img src="/static/assets/img/Herbasul.png" alt="Company Logo" class="logo" >
+                <!-- <h2>Medi Store</h2> -->
+            </div>
+            <div class="row">
+                <div class="address" >
+                    <p>Company Address:</p>
+                    <p>Medi Store, Thrissur, India</p>
+                    <p>Phone:  +91 890 345 8765</p>
+                    <p>Email:  medistore@gmail.com</p>
+                </div>
+                <div class="c_address" align="right">
+                    <p>Customer Address:</p>
+                    <p>{{ data['usd'][0]['fname'] }} {{ data['usd'][0]['lname'] }}</p>
+                    <p>Phone: {{ data['usd'][0]['phone'] }}</p>
+                    <p>Email: {{ data['usd'][0]['email'] }}</p>
+                </div>
+            </div>
+            <div class="row">
+            <div class="bill-info">
+                <div class="bill-number">
+                    <p>Bill Number: {{ data['prescription_id'] }}</p>
+                </div>
+                
+            </div>
+            <div class="bill-date" align="right">
+               
+                <div class="date">
+                    <p>Date: {{ data['date'] }}</p>
+                </div>
+            </div>
+        </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Medicine Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data['view_pre_med'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ row['name'] }}</td>
+                        <td>{{ row['price'] }}</td>
+                        <td>{{ row['quantity'] }}</td>
+                        <td>{{ row['amount'] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+            <div class="grand-total">
+                <p style="color: rgb(135, 5, 5);font-weight: 700;">Grand Total:  ₹ {{data['total_amount']}}</p>
+            </div>
+            {% if data['st'] == "Accepted" %}
+            <div class="pay-button">
+                <a href="user_make_payment?total_amount={{data['total_amount']}}&prescription_id={{ data['prescription_id'] }}" class="btn btn-primary">Pay Now</a>
+                <a href="?action=user_cod&total_amount={{data['total_amount']}}&prescription_id={{ data['prescription_id'] }}&st={{ data['st'] }}" class="btn btn-primary">COD</a>
+            </div>
+            {% elif data['st'] == "COD" %}
+            <div class="pay-button">
+                <h4>COD</h4>
+            </div>
+            {% endif %}
+        </div>
+    
+  
+    </div>
+
+
+
+
+    <style>
+        #hero {
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            /* background: #4ec5dd; */
+            background: #C2CFEA;
+            color: #0A306F;
+            font-weight: 600;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+    
+        #hero:hover {
+            /* transform: scale(1.05); */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: #A0B5E1;
+        }
+    
+        .star {
+            position: absolute;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            /* color: #C2CFEA; */
+            
+            animation: appear 0.3s ease-out, disappear 0.3s ease-in 0.5s;
+        }
+    
+        @keyframes appear {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    
+        @keyframes disappear {
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cards = document.querySelectorAll("#hero");
+    
+            cards.forEach((card) => {
+                card.addEventListener("mousemove", (event) => {
+                    createStarAtCursor(card, event);
+                });
+    
+                card.addEventListener("mouseleave", () => {
+                    clearStar(card);
+                });
+            });
+        });
+    
+        function createStarAtCursor(card, event) {
+            const star = document.createElement("div");
+            star.innerHTML = '<i class="bi bi-star-fill"></i>';
+            star.classList.add("star");
+    
+            const x = event.clientX - card.getBoundingClientRect().left;
+            const y = event.clientY - card.getBoundingClientRect().top;
+    
+            star.style.left = `${x}px`;
+            star.style.top = `${y}px`;
+    
+            card.appendChild(star);
+    
+            // Adjust the duration (in milliseconds) to reduce the showing time
+            setTimeout(() => {
+                star.classList.add("disappear");
+                setTimeout(() => {
+                    clearStar(card);
+                }, 500);
+            }, 800); // Adjust the duration (in milliseconds) as needed
+        }
+    
+        function clearStar(card) {
+            const star = card.querySelector(".star");
+            if (star) {
+                star.remove();
+            }
+        }
+    </script>
+
+    {% include "user_footer.html" %}
